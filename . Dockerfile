@@ -1,0 +1,31 @@
+FROM ubuntu:latest
+
+# Or, for a specific version (recommended for production):
+# FROM ubuntu:22.04  # Example: Ubuntu 22.04 (Jammy Jellyfish)
+# FROM ubuntu:20.04  # Example: Ubuntu 20.04 (Focal Fossa)
+
+# Your commands to install packages, copy files, etc. go here.
+# For example, to install some common packages:
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        nginx \
+        python3 \
+        git \
+        # Add any other packages you need here \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy your application code into the image:
+COPY . /app  # Copies everything in the current directory to /app in the image
+
+# Set the working directory inside the container:
+WORKDIR /app
+
+# Expose any ports your application uses:
+EXPOSE 80  # Example: Expose port 80 for Nginx
+
+# Start your application:
+CMD ["nginx", "-g", "daemon off;"] # Example: Start Nginx in the foreground
+
+# Or, if you have a different startup command:
+# CMD ["python3", "my_app.py"]
